@@ -64,6 +64,7 @@ make ARCH=riscv CROSS_COMPILE=$CROSS_PREFIX- -j16
 make ARCH=riscv CROSS_COMPILE=$CROSS_PREFIX- install
 
 
+
 # Build linux (IF already built linux, disable this)
 if [ ! -d "$SHELL_FOLDER/output/linux_kernel" ]; then  
 mkdir $SHELL_FOLDER/output/linux_kernel
@@ -91,6 +92,11 @@ fi
 cp $SHELL_FOLDER/output/linux_kernel/Image $SHELL_FOLDER/output/rootfs/bootfs/Image
 cp $SHELL_FOLDER/output/uboot/quard_star_uboot.dtb $SHELL_FOLDER/output/rootfs/bootfs/quard_star.dtb
 cp -r $SHELL_FOLDER/output/busybox/* $SHELL_FOLDER/output/rootfs/rootfs/
+cp -r $SHELL_FOLDER/target_root_script/* $SHELL_FOLDER/output/rootfs/rootfs/
+mkdir $SHELL_FOLDER/output/rootfs/rootfs/proc
+mkdir $SHELL_FOLDER/output/rootfs/rootfs/sys
+mkdir $SHELL_FOLDER/output/rootfs/rootfs/dev
+mkdir $SHELL_FOLDER/output/rootfs/rootfs/tmp
 $SHELL_FOLDER/u-boot-2021.07/tools/mkimage -A riscv -O linux -T script -C none -a 0 -e 0 -n "Distro Boot Script" -d $SHELL_FOLDER/dts/quard_star_uboot.cmd $SHELL_FOLDER/output/rootfs/bootfs/boot.scr
 sudo $SHELL_FOLDER/build_rootfs/build.sh $SHELL_FOLDER/output/rootfs
 

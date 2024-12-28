@@ -57,11 +57,12 @@ dtc -I dts -O dtb -o $SHELL_FOLDER/output/uboot/quard_star_uboot.dtb quard_star_
 # build busybox
 if [ ! -d "$SHELL_FOLDER/output/busybox" ]; then  
 mkdir $SHELL_FOLDER/output/busybox
-fi  
 cd $SHELL_FOLDER/busybox-1.33.1
-make ARCH=riscv CROSS_COMPILE=$CROSS_PREFIX- quard_star_defconfig
+#make ARCH=riscv CROSS_COMPILE=$CROSS_PREFIX- quard_star_defconfig
 make ARCH=riscv CROSS_COMPILE=$CROSS_PREFIX- -j16
 make ARCH=riscv CROSS_COMPILE=$CROSS_PREFIX- install
+fi  
+
 
 
 
@@ -93,16 +94,19 @@ cp $SHELL_FOLDER/output/linux_kernel/Image $SHELL_FOLDER/output/rootfs/bootfs/Im
 cp $SHELL_FOLDER/output/uboot/quard_star_uboot.dtb $SHELL_FOLDER/output/rootfs/bootfs/quard_star.dtb
 cp -r $SHELL_FOLDER/output/busybox/* $SHELL_FOLDER/output/rootfs/rootfs/
 cp -r $SHELL_FOLDER/target_root_script/* $SHELL_FOLDER/output/rootfs/rootfs/
+cp $SHELL_FOLDER/bash-5.2.37/output/bin/bash $SHELL_FOLDER/output/rootfs/rootfs/bin/
+chmod +777 $SHELL_FOLDER/output/rootfs/rootfs/bin/bash
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/lib
 ln -s ./lib ./lib64
-cp -r $CROSS_COMPILE_DIR/lib/* $SHELL_FOLDER/output/rootfs/rootfs/lib
+cp -r $CROSS_COMPILE_DIR/riscv64-buildroot-linux-gnu/sysroot/lib/* $SHELL_FOLDER/output/rootfs/rootfs/lib
+cp $CROSS_COMPILE_DIR/riscv64-buildroot-linux-gnu/sysroot/usr/bin/* $SHELL_FOLDER/output/rootfs/rootfs/usr/bin
+cp $SHELL_FOLDER/screenfetch-dev $SHELL_FOLDER/output/rootfs/rootfs/usr/bin
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/proc
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/sys
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/dev
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/tmp
 $SHELL_FOLDER/u-boot-2021.07/tools/mkimage -A riscv -O linux -T script -C none -a 0 -e 0 -n "Distro Boot Script" -d $SHELL_FOLDER/dts/quard_star_uboot.cmd $SHELL_FOLDER/output/rootfs/bootfs/boot.scr
 sudo $SHELL_FOLDER/build_rootfs/build.sh $SHELL_FOLDER/output/rootfs
-
 
 
 

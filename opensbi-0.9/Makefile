@@ -157,7 +157,7 @@ ifndef PLATFORM_RISCV_ABI
 endif
 ifndef PLATFORM_RISCV_ISA
   ifneq ($(PLATFORM_RISCV_TOOLCHAIN_DEFAULT), 1)
-    PLATFORM_RISCV_ISA = rv$(PLATFORM_RISCV_XLEN)imafdc
+    PLATFORM_RISCV_ISA = rv$(PLATFORM_RISCV_XLEN)imafdc_zifencei
   else
     PLATFORM_RISCV_ISA = $(OPENSBI_CC_ISA)
   endif
@@ -205,6 +205,7 @@ GENFLAGS	+=	$(firmware-genflags-y)
 
 CFLAGS		=	-g -Wall -Werror -ffreestanding -nostdlib -fno-strict-aliasing -O2
 CFLAGS		+=	-fno-omit-frame-pointer -fno-optimize-sibling-calls
+CFLAGS 		+=  -fno-stack-protector
 CFLAGS		+=	-mno-save-restore -mstrict-align
 CFLAGS		+=	-mabi=$(PLATFORM_RISCV_ABI) -march=$(PLATFORM_RISCV_ISA)
 CFLAGS		+=	-mcmodel=$(PLATFORM_RISCV_CODE_MODEL)

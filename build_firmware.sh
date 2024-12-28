@@ -1,7 +1,7 @@
 SHELL_FOLDER=$(cd "$(dirname "$0")";pwd)
 
 CROSS_PREFIX=/home/hunsang/qemu2/riscv64-lp64d--glibc--stable-2024.05-1/bin/riscv64-buildroot-linux-gnu
-
+CROSS_COMPILE_DIR=/home/hunsang/qemu2/riscv64-lp64d--glibc--stable-2024.05-1
 
 # Loader (BL1)
 if [ ! -d "$SHELL_FOLDER/output/lowlevelboot" ]; then  
@@ -93,6 +93,9 @@ cp $SHELL_FOLDER/output/linux_kernel/Image $SHELL_FOLDER/output/rootfs/bootfs/Im
 cp $SHELL_FOLDER/output/uboot/quard_star_uboot.dtb $SHELL_FOLDER/output/rootfs/bootfs/quard_star.dtb
 cp -r $SHELL_FOLDER/output/busybox/* $SHELL_FOLDER/output/rootfs/rootfs/
 cp -r $SHELL_FOLDER/target_root_script/* $SHELL_FOLDER/output/rootfs/rootfs/
+mkdir $SHELL_FOLDER/output/rootfs/rootfs/lib
+ln -s ./lib ./lib64
+cp -r $CROSS_COMPILE_DIR/lib/* $SHELL_FOLDER/output/rootfs/rootfs/lib
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/proc
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/sys
 mkdir $SHELL_FOLDER/output/rootfs/rootfs/dev
